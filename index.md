@@ -51,7 +51,10 @@ Some famous handpan music pieces:
 - max/msp
 - laptop
 
+#### To explore
 
+- handpan tutorials: play the pre-programmed song step-by-step (i.e. note by note), by lighting up the note/notes and proceed when the player hit the note/notes.
+- have a metronome as a background for practice
 
 Note: The actual content is subject to change.
 
