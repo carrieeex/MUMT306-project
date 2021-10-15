@@ -1,6 +1,10 @@
 ### Brief description
 
-Inspired by the [Light-up Piezo Drum Kit by Yolanda Ma](https://yolanmz.github.io/light-up-piezo-drum/), I want to create a small personalized handpan with Arduino kit and Max patch that allows me to play handpan in different scales. 
+Inspired by the [Light-up Piezo Drum Kit by Yolanda Ma](https://yolanmz.github.io/light-up-piezo-drum/), and the [Playable Drum Set using Coke Cans by SunFounder Maker Education](https://youtu.be/UVISquEcuzg?t=166), I want to create a small personalized handpan with Arduino kit and Max patch that allows me to play handpan in different scales. 
+
+![Yolanda Ma's project](https://yolanmz.github.io/light-up-piezo-drum/media/arduino_piezo_drum_kit.jpeg)
+![image](https://user-images.githubusercontent.com/59303880/137526383-78408b9b-4311-49d3-804c-ed8e59c95446.png)
+
 
 #### Background
 
