@@ -8,13 +8,42 @@ A mini handpan was built with pop cans, pizeoelectric sensors, and a Arduino Meg
 Handpan instrument is a group of metallic percussion instruments played with hands that are similar to Hang® (cre­at­ed by PANArt tuners Sabi­na Schär­er and Felix Rohn­er in 2000 in Switzer­land[^1]), consisting of two hemispherical shells of nitrided or stainless steel. Its extraordinary sound is often described as calming and peaceful, which can be used for stress-release[^2]. Originated from the Caribbean steelpan instrument, a handpan typically has 8-9 notes in a pentatonic scale. Figure 1 is a sample image of a free integral Hang® built by PANArt, where seven harmonically tuned notes are around a central deep tone, which "excites the Helmholtz (cavity) resonance of the
 body of the instrument"[^3]. Figure 2 is a sample tuning scale. It can be turned in a wide range of scales, some examples are illustrated in Figure 3. 
 
-![HANG® image](https://upload.wikimedia.org/wikipedia/commons/a/a3/Panart-freies-integrales-hang.jpg "Figure 1. The side, top, and bottom view of a Hang®[^4].")
+<p align="center">
+  <img height="300" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Panart-freies-integrales-hang.jpg" alt="Figure 1. The side, top, and bottom view of a Hang®.">
+  <figcaption align = "center"><b>Figure 1. The side, top, and bottom view of a Hang®[^4].</b></figcaption>
+</p>
+<p>&nbsp;</p>
+<p align="center">
+  <img width="350" src="https://acoustics.org/pressroom/httpdocs/155th/wesselfig3.gif" alt="Figure 2. A sample tuning scale beginning with D3 note in the center."> 
+  <figcaption align = "center"><b>Figure 2. A sample tuning scale beginning with D3 note in the center[^5].</b></figcaption>
+</p>
+<p>&nbsp;</p>
+<p align="center">
+  <img width="550" src="./img/HangScales.png" alt="Figure 3. Sample tuning scales.">
+  <figcaption align = "center"><b>Figure 3. Sample tuning scales[^6].</b></figcaption>
+</p>
 
-![HANG® tuning](https://acoustics.org/pressroom/httpdocs/155th/wesselfig3.gif "Figure 2. A sample tuning scale beginning with D3 note in the center[^5].")
+<p>&nbsp;</p>
+<!---comment-->
+Like all the other beautiful handmade instruments in the world, a good quality physical handpan is not easily accessible. Tuning a handpan requires skillful hammering that needs years of practice, because there are nearly 60 parameters to be considered when tuning a sound into steel, according to A. Achong[^3]. Given the fact that tuning steelpans is an intuitive and complicated task, the entire building process of a typical handpan like in Figure 1 usually takes 2-3 months, according to AYASA Instruments, a well-konwn handpan manufacturer in Netherlands[^7]. The complete process is described in a blog post by Sylvan Paslier[^8]. Since there are not many experienced tuners of this young instrument, and the demand is still increasing, a good handpan with 8 or 9 notes typically costs 3~4k CAD (before tax and shipping). In addition, it is not easy to carry around as the diameter is around 55 cm and it weighs nearly 5 kg without the case. Therefore, for this project, a mini handpan was built with pop cans, pizeoelectric sensors, and a arduino microcontroller, which is much more accessible to the public and ideal for practice purpose.
 
-![HANG® scales](./img/HangScales.png "Figure 3. Sample tuning scales[^6].")
+<!---<p>&nbsp;</p>
+This Ceramic Piezo Vibration Piece Sensor buffers a piezoelectric transducer that responds to strain changes by generating a measurable output voltage change which is proportional with the strength of vibration. So you can know the extent of vibration. Different from digital vibration sensor that only accounts times, this analog one can tell extent of vibration.
+When the piezoelectric ceramic shocking will generate an electrical signal, controller analog port can be perceived slight vibration signals, also can be realized with vibration interactions related works, such as electronic drums.
+Working Voltage: 3.3V or 5V. Working Current: 1mA. Interface Type: Analog Output.
+Please connect analog voltage ceramic vibration sensor to the UNO controller's analog port A0 in accordance with the procedure, then observe the output value of serial port when the vibration degree is different, it can realize interactive works related to the vibration.
+Strong After-sales Service Team: As long as you have any questions about the product, we will resolve your issue immediately if received your email, your satisfactory purchase experience is our greatest hope! How to email us? Plz click “MakerHawk-US” and click “Ask a question” to email us! Looking forward to your consultation!
+https://www.amazon.ca/gp/product/B07KS5NV4V/ref=ppx_yo_dt_b_asin_title_o07_s00?ie=UTF8&th=1
+-->
+<br>
+Pizeoelectric Sensors are active sensors in which the mechanical quantities (such as force, strain, pressure, acceleration, and acoustic emission) applied to the transduction element made of a piezoelectric material yields an electric charge due to the piezoelectric effect - a proportional change in the electric polarization of the piezoelectric material resulting from a mechanical deformation[^9]. Sensing materials include single crystals, piezoelectric ceramics, textures and thin films. Because of the high frequency, wide measuring range, high stability and many other advantages, these sensors are widely used in our daily life, including fire alarms, microwave ovens, microphones, just to name a few. Figure 4 is the Ceramic Piezo Vibration Sensor Module used for this project. It consists of a piezoelectric ceramics sensor and a breadboard-friendly pc board, purchased from Amazon.
 
-Like all the other beautiful handmade instruments in the world, a good quality physical handpan is not easily accessible. Tuning a handpan requires skillful hammering that needs years of practice, because there are around 57 parameters to be considered when tuning a sound into steel, according to A. Achong[^3]. Given the fact that tuning steelpans is an intuitive and complicated task, the entire building process of a typical handpan like in Figure 1 usually takes 2-3 months, according to AYASA Instruments, a well-konwn handpan manufacturer in Netherlands[^7]. The complete process is described in a blog post by Sylvan Paslier[^8].
+<p align="center">
+  <img width="550" src="./img/PiezoelectricSensor.png" alt="Figure 4. A Ceramic Piezo Vibration Sensor Module.">
+  <figcaption align = "center"><b>Figure 4. A Ceramic Piezo Vibration Sensor Module[^10].</b></figcaption>
+</p>
+
+
 
 ### Methods
 
@@ -45,6 +74,10 @@ Like all the other beautiful handmade instruments in the world, a good quality p
 [^7]: ‘Ayasa - Acquire an Instrument’. Accessed 1 December 2021. https://ayasainstruments.com/acquire-an-ayasa.
 
 [^8]: Paslier, Sylvain. ‘How Are Handpans Made? A Step-by-Step Guide’. sylvainpasliermusic, 22 August 2019. https://www.sylvainpasliermusic.com/post/how-are-handpans-made.
+
+[^9]: Gautschi, Gustav. ‘Introduction’. In Piezoelectric Sensorics: Force Strain Pressure Acceleration and Acoustic Emission Sensors Materials and Amplifiers, edited by Gustav Gautschi, 1–3. Berlin, Heidelberg: Springer, 2002. https://doi.org/10.1007/978-3-662-04732-3_1.
+
+[^10]: ‘MakerHawk 4pcs Analog Ceramic Piezo Vibration Sensor Module 3.3V/5V for Arduino DIY Kit: Amazon.Com: Industrial & Scientific’. Accessed 1 December 2021. https://www.amazon.com/MakerHawk-Analog-Ceramic-Vibration-Arduino/dp/B07KS5NV4V.
 
 
 
