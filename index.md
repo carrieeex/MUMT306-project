@@ -67,16 +67,68 @@ Since the strain change of the piezoelectric sensor is an analogue input, and a 
 Regarding the interface, in consideration of handpans' material (steel) and their drum-nature, and inspired by the Arduino prject [Playable Drum Set by SunFounder Maker Education](https://youtu.be/UVISquEcuzg), mini Coke cans were used for building the physical model. Table 1 lists all the materials used for building the mini handpan, and Figure 6 illustrates the designed circuit.
 
 <b>Table 1. List of materials used for the project.</b>
-| No. | Componnet Name | Model | Quantity|
-| --- | -------------- | -------------- | -- |
-| 1   | Pop Cans       | Coca-Cola mini |8   |
-| 2   | Can Opener     | Starfrit       |1   |
-| 3   | Piezoelectric Sensor  |MakerHawk Analog Ceramic Piezo Vibration Sensor Module         |9   |
-| 4   | Arduino Microcontroller Board  |ELEGOO Mega 2560 R3         |1   |
-| 5   | Breadboard     | ELEGOO         |3   |
-| 6   | Jumper Wires   | ELEGOO         |many  |
-| 7   | Hot Glue Gun   | SOONAN         |1   |
-| 8   | Computer   | Equipped with Arduino IDE and MAX/MSP         |1   |
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Component Name</th>
+<th>Model</th>
+<th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Pop Cans</td>
+<td>Coca-Cola mini</td>
+<td>8</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Can Opener</td>
+<td>Starfrit</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Piezoelectric Sensor</td>
+<td>MakerHawk Analog Ceramic Piezo Vibration Sensor Module</td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Arduino Microcontroller Board</td>
+<td>ELEGOO Mega 2560 R3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Breadboard</td>
+<td>ELEGOO</td>
+<td>3</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Jumper Wires</td>
+<td>ELEGOO</td>
+<td>many</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Hot Glue Gun</td>
+<td>SOONAN</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Computer</td>
+<td>Equipped with Arduino IDE and MAX/MSP</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+
 
 <p align="center">
   <img width="550" src="./img/circuit.png" alt="Figure 6. The breadboard diagram of the mini handpan circuit.">
