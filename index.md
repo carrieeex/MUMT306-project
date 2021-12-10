@@ -145,12 +145,12 @@ By cutting the cover and cylindrical shell of 8 pop cans, a mini handpan prototy
 </p>
 
 <p align="center">
-  <img width="550" src="./img/CircuitBuilt.jpg" alt="Figure 8. The built circuit.">
+  <img width="550" src="./img/CircuitBuilt.JPG" alt="Figure 8. The built circuit.">
   <figcaption align = "center"><b>Figure 8. The built circuit.</b></figcaption>
 </p>
 
 <p align="center">
-  <img width="550" src="./img/MiniHandpan.jpg" alt="Figure 8. The  mini handpan.">
+  <img width="550" src="./img/MiniHandpan.JPG" alt="Figure 8. The  mini handpan.">
   <figcaption align = "center"><b>Figure 9. The mini handpan.</b></figcaption>
 </p>
 
