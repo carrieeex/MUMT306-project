@@ -6,25 +6,24 @@ A mini handpan was built with pop cans, pizeoelectric sensors, and a Arduino Meg
 ### Introduction
 
 Handpan instrument is a group of metallic percussion instruments played with hands that are similar to Hang® (cre­at­ed by PANArt tuners Sabi­na Schär­er and Felix Rohn­er in 2000 in Switzer­land[^1]), consisting of two hemispherical shells of nitrided or stainless steel. Its extraordinary sound is often described as calming and peaceful, which can be used for stress-release[^2]. Originated from the Caribbean steelpan instrument, a handpan typically has 8-9 notes in a pentatonic scale. Figure 1 is a sample image of a free integral Hang® built by PANArt, where seven harmonically tuned notes are around a central deep tone, which "excites the Helmholtz (cavity) resonance of the
-body of the instrument"[^3]. Figure 2 is a sample tuning scale. It can be turned in a wide range of scales, some examples are illustrated in Figure 3. 
+body of the instrument"[^3][^4]. Figure 2 is a sample tuning scale[^5]. It can be turned in a wide range of scales, some examples are illustrated in Figure 3[^6]. 
 
 <p align="center">
   <img height="300" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Panart-freies-integrales-hang.jpg" alt="Figure 1. The side, top, and bottom view of a Hang®.">
-  <figcaption align = "center"><b>Figure 1. The side, top, and bottom view of a Hang®[^4].</b></figcaption>
+  <figcaption align = "center"><b>Figure 1. The side, top, and bottom view of a Hang®.</b></figcaption>
 </p>
 <p>&nbsp;</p>
 <p align="center">
   <img width="350" src="https://acoustics.org/pressroom/httpdocs/155th/wesselfig3.gif" alt="Figure 2. A sample tuning scale beginning with D3 note in the center."> 
-  <figcaption align = "center"><b>Figure 2. A sample tuning scale beginning with D3 note in the center[^5].</b></figcaption>
+  <figcaption align = "center"><b>Figure 2. A sample tuning scale beginning with D3 note in the center.</b></figcaption>
 </p>
 <p>&nbsp;</p>
 <p align="center">
   <img width="550" src="./img/HangScales.png" alt="Figure 3. Sample tuning scales.">
-  <figcaption align = "center"><b>Figure 3. Sample tuning scales[^6].</b></figcaption>
+  <figcaption align = "center"><b>Figure 3. Sample tuning scales.</b></figcaption>
 </p>
 
-<p>&nbsp;</p>
-<!---comment-->
+<!---comment<p>&nbsp;</p>-->
 Like all the other beautiful handmade instruments in the world, a good quality physical handpan is not easily accessible. Tuning a handpan requires skillful hammering that needs years of practice, because there are nearly 60 parameters to be considered when tuning a sound into steel, according to A. Achong[^3]. Given the fact that tuning steelpans is an intuitive and complicated task, the entire building process of a typical handpan like in Figure 1 usually takes 2-3 months, according to AYASA Instruments, a well-konwn handpan manufacturer in Netherlands[^7]. The complete process is described in a blog post by Sylvan Paslier[^8]. Since there are not many experienced tuners of this young instrument, and the demand is still increasing, a good handpan with 8 or 9 notes typically costs 3~4k CAD (before tax and shipping). In addition, it is not easy to carry around as the diameter is around 55 cm and it weighs nearly 5 kg without the case. Therefore, for this project, a mini handpan was built with pop cans, pizeoelectric sensors, and a arduino microcontroller, which is much more accessible to the public and ideal for practice purpose.
 
 <!---<p>&nbsp;</p>
@@ -35,17 +34,44 @@ Please connect analog voltage ceramic vibration sensor to the UNO controller's a
 Strong After-sales Service Team: As long as you have any questions about the product, we will resolve your issue immediately if received your email, your satisfactory purchase experience is our greatest hope! How to email us? Plz click “MakerHawk-US” and click “Ask a question” to email us! Looking forward to your consultation!
 https://www.amazon.ca/gp/product/B07KS5NV4V/ref=ppx_yo_dt_b_asin_title_o07_s00?ie=UTF8&th=1
 -->
-<br>
-Pizeoelectric Sensors are active sensors in which the mechanical quantities (such as force, strain, pressure, acceleration, and acoustic emission) applied to the transduction element made of a piezoelectric material yields an electric charge due to the piezoelectric effect - a proportional change in the electric polarization of the piezoelectric material resulting from a mechanical deformation[^9]. Sensing materials include single crystals, piezoelectric ceramics, textures and thin films. Because of the high frequency, wide measuring range, high stability and many other advantages, these sensors are widely used in our daily life, including fire alarms, microwave ovens, microphones, just to name a few. Figure 4 is the Ceramic Piezo Vibration Sensor Module used for this project. It consists of a piezoelectric ceramics sensor and a breadboard-friendly pc board, purchased from Amazon.
+
+### Methods
+
+To construct a mini handpan, instead of the natural sound generated by the cavity, an electronic version should be considered, given the small size of the plan. Thanks to the development of _Musical Instrument Digital Interface_, or MIDI, a wide range of instruments can be played in a small interface. MIDI is a standard way to convey music performance information, including playing, editing, and recording music, through electronic data called MIDI messages[^MIDI-9]. A MIDI message contains a status byte and two data bytes. For this project, the following information is needed: a sythesized musical sounds with timbre similar to handpans, and on/off triggering of the note to be played. According to the standardized specification, _General MIDI_, the sound of a variety of instruments is selected based on a _program change_ of the _channel message_, and the suond of steel drums (a "cousin"[^cousin-10] of the handpan) with _program number_ 115 is a resonable choice. As for triggering the note, it is simply NOTE-ON/OFF events in _chanel message_, specifying the _note number_ (pitch or frequency) and _note velocity_ (dynamics). Now the question comes to how to send these MIDI messages, which can be acomplished by the _Serial_ functionality in Aruino and the _serial_ object in Max/MSP[^arduino+max-11].
+
+Arduino is an open-source platfrom based on their microcontroller boards, programming and processing tools (Arduino Software (IDE)) for electonics projects. Max/MSP is a visual programming environment for music and multimedia production. Rather than sending the actual MIDI message, here, MIDI byte values are progrommed as space-separated integers in Arduino, and they are received by the _serial_ object in Max, which are then converted to a list of numbers and sent to the _midiout_ object. Therefore, by defining different parameters of MIDI messages, one could personalized their handpan with any notes or any scale with any sound in MIDI programs they want to play. 
+
+Since we would like to trigger MIDI events when we actually "play" or touch the mini prototype, just like playing a real handpan, piezoelectric sensors need to be introduced.
+
+Pizeoelectric Sensors are active sensors in which the mechanical quantities (such as force, strain, pressure, acceleration, and acoustic emission) applied to the transduction element made of a piezoelectric material yields an electric charge due to the piezoelectric effect - a proportional change in the electric polarization of the piezoelectric material resulting from a mechanical deformation[^9-12]. Sensing materials include single crystals, piezoelectric ceramics, textures and thin films. Because of the high frequency, wide measuring range, high stability and many other advantages, these sensors are widely used in our daily life, including fire alarms, microwave ovens, microphones, just to name a few. Figure 4 is the Ceramic Piezo Vibration Sensor Module used for this project. It consists of a piezoelectric ceramics sensor and a breadboard-friendly pc board, purchased from Amazon[^10-13].
 
 <p align="center">
   <img width="550" src="./img/PiezoelectricSensor.png" alt="Figure 4. A Ceramic Piezo Vibration Sensor Module.">
-  <figcaption align = "center"><b>Figure 4. A Ceramic Piezo Vibration Sensor Module[^10].</b></figcaption>
+  <figcaption align = "center"><b>Figure 4. A Ceramic Piezo Vibration Sensor Module.</b></figcaption>
 </p>
 
+Since the strain change of the piezoelectric sensor is an analogue input, and a handpan has at least 8 notes, an Arduino Mega 2560 board with 16 analog inputs and 54 digital input/output pins was used, as shown in Figure 5[^11-14].
+
+<p align="center">
+  <img width="450" src="./img/ArduinoMega2560.jpg" alt="Figure 5. The Arduino Mega 2560 board.">
+  <figcaption align = "center"><b>Figure 5. The Arduino Mega 2560 board.</b></figcaption>
+</p>
+
+Regarding the interface, in consideration of handpans' material (steel) and their drum-nature, and inspired by the Arduino prject [Playable Drum Set by SunFounder Maker Education](https://youtu.be/UVISquEcuzg), mini Coke cans were used for building the physical prototype. Table 1 lists all the materials used for building the mini handpan.
+
+<b>Table 1. List of materials used for the project.</b>
+| No. | Componnet Name | Model | Quantity|
+| --- | -------------- | -------------- | -- |
+| 1   | Pop Cans       | Coca-Cola mini |8   |
+| 2   | Can Opener     | Starfrit       |1   |
+| 3   | Piezoelectric Sensor  |MakerHawk Analog Ceramic Piezo Vibration Sensor Module         |9   |
+| 4   | Arduino Microcontroller Board  |ELEGOO Mega 2560 R3         |1   |
+| 5   | Breadboard     | ELEGOO         |3   |
+| 6   | Jumper Wires   | ELEGOO         |many  |
+| 7   | Hot Glue Gun   | SOONAN         |1   |
+| 8   | Computer   | Equipped with Arduino IDE and MAX/MSP         |1   |
 
 
-### Methods
 
 
 
@@ -75,11 +101,17 @@ Pizeoelectric Sensors are active sensors in which the mechanical quantities (suc
 
 [^8]: Paslier, Sylvain. ‘How Are Handpans Made? A Step-by-Step Guide’. sylvainpasliermusic, 22 August 2019. https://www.sylvainpasliermusic.com/post/how-are-handpans-made.
 
-[^9]: Gautschi, Gustav. ‘Introduction’. In Piezoelectric Sensorics: Force Strain Pressure Acceleration and Acoustic Emission Sensors Materials and Amplifiers, edited by Gustav Gautschi, 1–3. Berlin, Heidelberg: Springer, 2002. https://doi.org/10.1007/978-3-662-04732-3_1.
+[^MIDI-9]: Scavone, Gary P. ‘MIDI’. Accessed 1 December 2021. https://www.music.mcgill.ca/~gary/306/week2/node3.html.
 
-[^10]: ‘MakerHawk 4pcs Analog Ceramic Piezo Vibration Sensor Module 3.3V/5V for Arduino DIY Kit: Amazon.Com: Industrial & Scientific’. Accessed 1 December 2021. https://www.amazon.com/MakerHawk-Analog-Ceramic-Vibration-Arduino/dp/B07KS5NV4V.
+[^cousin-10]: Morrison, Andrew, and Thomas D. Rossing. ‘The Extraordinary Sound of the Hang’. Physics Today 62, no. 3 (March 2009): 66–67. https://doi.org/10.1063/1.3099586.
 
+[^arduino+max-11]: Scavone, Gary P. ‘Interfacing the Arduino to Max/MSP’. Accessed 1 December 2021. https://www.music.mcgill.ca/~gary/306/week5/node7.html.
 
+[^9-12]: Gautschi, Gustav. ‘Introduction’. In Piezoelectric Sensorics: Force Strain Pressure Acceleration and Acoustic Emission Sensors Materials and Amplifiers, edited by Gustav Gautschi, 1–3. Berlin, Heidelberg: Springer, 2002. https://doi.org/10.1007/978-3-662-04732-3_1.
+
+[^10-13]: ‘MakerHawk 4pcs Analog Ceramic Piezo Vibration Sensor Module 3.3V/5V for Arduino DIY Kit: Amazon.Com: Industrial & Scientific’. Accessed 1 December 2021. https://www.amazon.com/MakerHawk-Analog-Ceramic-Vibration-Arduino/dp/B07KS5NV4V.
+
+[^11-14]: Arduino Online Shop. ‘Arduino Mega 2560 Rev3’. Accessed 1 December 2021. http://store-usa.arduino.cc/products/arduino-mega-2560-rev3.
 
 <!--- 
 PANArt. ‘Hang®’. Panart (en). Accessed 1 December 2021. https://panart.ch/en/instruments/sound-sculpture-hang. 
