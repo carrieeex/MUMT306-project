@@ -64,7 +64,7 @@ Since the strain change of the piezoelectric sensor is an analogue input, and a 
   <figcaption align = "center"><b>Figure 6. The Arduino Mega 2560 board.</b></figcaption>
 </p>
 
-Regarding the interface, in consideration of handpans' material (steel) and their drum-nature, and inspired by the Arduino project [Playable Drum Set by SunFounder Maker Education](https://youtu.be/UVISquEcuzg), mini Coke cans were used for building the physical model. Table 1 lists all the materials used for building the mini handpan, and Figure 6 illustrates the designed circuit.
+Regarding the interface, in consideration of handpans' material (steel) and their drum-nature, and inspired by the Arduino project [Playable Drum Set by SunFounder Maker Education](https://youtu.be/UVISquEcuzg), mini Coke cans were used for building the physical model. Table 1 lists all the materials used for building the mini handpan, and Figure 7 illustrates the designed circuit.
 
 <table>
 <thead> <b>Table 1. List of materials used for the project.</b>
@@ -130,34 +130,34 @@ Regarding the interface, in consideration of handpans' material (steel) and thei
 
 
 <p align="center">
-  <img width="550" src="./img/circuit.png" alt="Figure 6. The breadboard diagram of the mini handpan circuit.">
-  <figcaption align = "center"><b>Figure 6. The breadboard diagram of the mini handpan circuit, designed in <i>Fritzing</i>.</b></figcaption>
+  <img width="550" src="./img/circuit.png" alt="Figure 7. The breadboard diagram of the mini handpan circuit.">
+  <figcaption align = "center"><b>Figure 7. The breadboard diagram of the mini handpan circuit, designed in <i>Fritzing</i>.</b></figcaption>
 </p>
 
 ### Results
 
-By cutting the cover and cylindrical shell of 8 pop cans, a mini handpan prototype was built as in Figure 7. Then after connecting the wires and modules, the circuit was built successfully as in Figure 8 and 9.
+By cutting the cover and cylindrical shell of 8 pop cans, a mini handpan prototype was built as in Figure 8. Then after connecting the wires and modules, the circuit was built successfully as in Figure 9 and 10.
 
 <p align="center">
-  <img width="550" src="./img/prototype.png" alt="Figure 7. The prototype.">
-  <figcaption align = "center"><b>Figure 7. The prototype of the mini handpan.</b></figcaption>
+  <img width="550" src="./img/prototype.png" alt="Figure 8. The prototype.">
+  <figcaption align = "center"><b>Figure 8. The prototype of the mini handpan.</b></figcaption>
 </p>
 
 <p align="center">
-  <img width="550" src="./img/CircuitBuilt.JPG" alt="Figure 8. The built circuit.">
-  <figcaption align = "center"><b>Figure 8. The built circuit.</b></figcaption>
+  <img width="550" src="./img/CircuitBuilt.JPG" alt="Figure 9. The built circuit.">
+  <figcaption align = "center"><b>Figure 9. The built circuit.</b></figcaption>
 </p>
 
 <p align="center">
-  <img width="550" src="./img/MiniHandpan.JPG" alt="Figure 8. The  mini handpan.">
-  <figcaption align = "center"><b>Figure 9. The mini handpan.</b></figcaption>
+  <img width="550" src="./img/MiniHandpan.JPG" alt="Figure 10. The  mini handpan.">
+  <figcaption align = "center"><b>Figure 10. The mini handpan.</b></figcaption>
 </p>
 
-To trigger the NOTE ON event, a threshold value was determined by touching the sensor plate with the same force applied repeatedly and averaging out the peak values of the analogue readings for each sensor. A sample test is shown in Figure 10. As can be seen from the graph, the touch is like an impulse response, and as long as the sensor is touched by hand, a sudden peak of the sensor value appears and there is a time elapse for each touch. If the event is triggered simply by exceeding a threshold value, the attack is not a stable value to use; as if we accidentally touch the wire of the sensor, there would be a sudden attack and the event would be triggered. This is demonstrated in video 1. Therefore, the the output is filtered with low pass filter to make it more smooth. Also, the triggering should be on only when there is a touch, i.e. the threshold is exceeded for a certain amount of time, to avoid accidental attacks. Figure 11 demonstrates the original response in blue and the filtered response in red, which is much more smooth. All the code are shown in Appendix A, and the modified version of how each sensor responses is illustrated in Video 2.
+To trigger the NOTE ON event, a threshold value was determined by touching the sensor plate with the same force applied repeatedly and averaging out the peak values of the analogue readings for each sensor. A sample test is shown in Figure 11. As can be seen from the graph, the touch is like an impulse response, and as long as the sensor is touched by hand, a sudden peak of the sensor value appears and there is a time elapse for each touch. If the event is triggered simply by exceeding a threshold value, the attack is not a stable value to use; as if we accidentally touch the wire of the sensor, there would be a sudden attack and the event would be triggered. This is demonstrated in video 1. Therefore, the the output is filtered with low pass filter to make it more smooth. Also, the triggering should be on only when there is a touch, i.e. the threshold is exceeded for a certain amount of time, to avoid accidental attacks. Figure 12 demonstrates the original response in blue and the filtered response in red, which is much more smooth. All the code are shown in Appendix A, and the modified version of how each sensor responses is illustrated in Video 2.
 
 <p align="center">
-  <img width="550" src="./img/A0-arduino.png" alt="Figure 10. Sensor A0.">
-  <figcaption align = "center"><b>Figure 10. The threshold value test for sensor A0.</b></figcaption>
+  <img width="550" src="./img/A0-arduino.png" alt="Figure 11. Sensor A0.">
+  <figcaption align = "center"><b>Figure 11. The threshold value test for sensor A0.</b></figcaption>
 </p>
 
 <!--
@@ -180,8 +180,8 @@ src="https://youtu.be/NYNq7K48NYc">
 </p>
 
 <p align="center">
-  <img width="550" src="./img/A0-arduino-filtered.png" alt="Figure 11. Sensor A0.">
-  <figcaption align = "center"><b>Figure 11. The filtered response of sensor A0.</b></figcaption>
+  <img width="550" src="./img/A0-arduino-filtered.png" alt="Figure 12. Sensor A0.">
+  <figcaption align = "center"><b>Figure 12. The filtered response of sensor A0.</b></figcaption>
 </p>
 
 <iframe width="420" height="315"
