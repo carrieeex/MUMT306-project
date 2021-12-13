@@ -66,9 +66,8 @@ Since the strain change of the piezoelectric sensor is an analogue input, and a 
 
 Regarding the interface, in consideration of handpans' material (steel) and their drum-nature, and inspired by the Arduino prject [Playable Drum Set by SunFounder Maker Education](https://youtu.be/UVISquEcuzg), mini Coke cans were used for building the physical model. Table 1 lists all the materials used for building the mini handpan, and Figure 6 illustrates the designed circuit.
 
-<b>Table 1. List of materials used for the project.</b>
 <table>
-<thead>
+<thead> <b>Table 1. List of materials used for the project.</b>
 <tr>
 <th>No.</th>
 <th>Component Name</th>
@@ -154,14 +153,54 @@ By cutting the cover and cylindrical shell of 8 pop cans, a mini handpan prototy
   <figcaption align = "center"><b>Figure 9. The mini handpan.</b></figcaption>
 </p>
 
-A threshold value to trigger the NOTE ON event needs to be determined. To do so, by touching the sensor plate,
+To trigger the NOTE ON event, a threshold value was determined by touching the sensor plate with the same force applied repeatedly and averaging out the peak values of the analogue readings for each sensor. A sample test is shown in Figure 10. As can be seen from the graph, the touch is like an impulse response, and as long as the sensor is touched by hand, a sudden peak of the sensor value appears and there is a time elapse for each touch. If the event is triggered simply by exceeding a threshold value, the attack is not a stable value to use; as if we accidentally touch the wire of the sensor, there would be a suddent attack and the event would be triggered. This is demostrated in video 1. Therefore, the the output is filtered with low pass filter to make it more smooth. Also, the triggering should be on only when there is a touch, i.e. the threshold is exceeded for a certain amount of time, to avoid accidental attacks. Figure 11 demostrates the original response in blue and the filtered response in red, which is much more smooth. All the code are shown in Appendix A, and the modified version of how each sensor responses is illustrated in Video 2.
 
+<p align="center">
+  <img width="550" src="./img/A0-arduino.png" alt="Figure 10. Sensor A0.">
+  <figcaption align = "center"><b>Figure 10. The threshold value test for sensor A0.</b></figcaption>
+</p>
+
+<!--
+	<a href="{https://youtu.be/NYNq7K48NYc}" title="Video1. Suddent Attack"><img src="{https://i9.ytimg.com/vi/NYNq7K48NYc/mq2.jpg?sqp=COyr2Y0G&rs=AOn4CLCJ644V6FeJLNPup-l2by6-R1-RIQ}" alt="Suddent Attack" /></a>
+	<p align="center">
+	[![Video 1](https://i9.ytimg.com/vi/NYNq7K48NYc/mq2.jpg?sqp=COyr2Y0G&rs=AOn4CLCJ644V6FeJLNPup-l2by6-R1-RIQ)](https://youtu.be/NYNq7K48NYc "Video 1. Sudden Attack Effects")
+	</p>
+	<video width="400" controls>
+	<source src="ttps://youtu.be/NYNq7K48NYc" type="video/mp4">
+	<source src="mov_bbb.ogg" type="video/ogg">
+	Your browser does not support HTML video.
+	</video>
+-->
+
+<iframe width="420" height="315"
+src="https://youtu.be/NYNq7K48NYc">
+</iframe>
+<p>
+<a href="https://youtu.be/NYNq7K48NYc" target="_blank">Video 1. Sudden Attack Effects.</a>.
+</p>
+
+<p align="center">
+  <img width="550" src="./img/A0-arduino-filtered.png" alt="Figure 11. Sensor A0.">
+  <figcaption align = "center"><b>Figure 11. The filtered response of sensor A0.</b></figcaption>
+</p>
+
+<iframe width="420" height="315"
+src="https://youtu.be/e8lEwJxMvLI">
+</iframe>
+<p>
+<a href="https://youtu.be/e8lEwJxMvLI" target="_blank">Video 2. Demo of each note being played.</a>.
+</p>
 
 
 ### Discussion
 
+Video 2 shows a relative accurate response as sensors being touched by fingers, simulating playing an acutal handpan, with the low pass filter and time elapsed conditions. However, it has limitations which can be investigated further and improved. First is that it only works well for slow practice due to the time elapsed condition, where the interval was set to 800 ms according to one impulse response of the sensor, which means only one note will be played if two or more consecutive touch of the same sensor are within that range. This can be modifed by detecting the peak value of the sensor, where for a certain amount of the time, the note-on event will be triggered as long as there is a peak compared with its previous and later responses (excluding the sudden attack), rather than using a fixed threshold value. As for now if the sensor is pressed for a long time (longer than the set interval), it will trigger a periodic note-on/off event for every time interval elaspes, which may not be ideal unless the player wants to play a loop.
+
+Another obstacle is that the volume was set to the maximum (127) for each note and each touch as long as the if condition (exceeding the threshold for certain times) is satisfied; while as demostrated in Video 2, the volume was not the same for each touch, which may due to the hardware of the laptop or the software issue. It can be tested in other computers to check the problem, and the volume may be adjusted based on the force applied, in order to simulate a more realistic playing experience. Furthermore, if the player would like to use the real handpan sound, it can be achieved by implementing the audio files of each note number into Max or Arduino, still, for a more realistic practice.
 
 ### Conclusion
+
+Overall, a mini handpan was built successfully with the MIDI communication between Arduino and Max/MSP, the piezoelectric sensor modules, and the pop cans. It can be personalized in any note number and thus any scales, and any instruments within the MIDI specifications. It is affordable, adjustable, and portable, ideal for slow practice. Further investigations of a better  piezoelectric sensor response in terms of accuracy, volume, and dynamics.
 
 
 
@@ -232,15 +271,61 @@ const int NOTE6 = A6;int Note6Val = 0;
 const int NOTE7 = A7;int Note7Val = 0;
 const int NOTE8 = A8;int Note8Val = 0;
 
-const int threshold = 10; //(abs - low pass filter) or (average value)
-
 int value;
+
+const int threshold = 3; //
+
+#include <elapsedMillis.h>
+elapsedMillis timeElapsed; //declare global if you don't want it reset every time loop runs
+unsigned int interval = 800;
+
+int x0 = 0;
+int x1 = 0;
+int x2 = 0;
+int x3 = 0;
+int x4 = 0;
+int x5 = 0;
+int x6 = 0;
+int x7 = 0;
+int x8 = 0;
+
+int test = 100;
+
+int x0n = 0;
+int x1n = 0;
+int x2n = 0;
+int x3n = 0;
+int x4n = 0;
+int x5n = 0;
+int x6n = 0;
+int x7n = 0;
+int x8n = 0;
+
+int y0 = 0;
+int y1 = 0;
+int y2 = 0;
+int y3 = 0;
+int y4 = 0;
+int y5 = 0;
+int y6 = 0;
+int y7 = 0;
+int y8 = 0;
+
+int y0n = 0;
+int y1n = 0;
+int y2n = 0;
+int y3n = 0;
+int y4n = 0;
+int y5n = 0;
+int y6n = 0;
+int y7n = 0;
+int y8n = 0;
 
 // midi2Max function declaration with optional arguments
 void midi2Max( int cmd, int data1 = -1, int data2 = -1 );
 
 void setup() {
-  Serial.begin(115200);// set the MIDI baud rate
+  Serial.begin(9600);// set the MIDI baud rate
 }
 
 void loop() {// put your main code here, to run repeatedly:
@@ -248,71 +333,113 @@ void loop() {// put your main code here, to run repeatedly:
     value = Serial.read();}
 
   Note0Val = analogRead(A0);
-  if (Note0Val >= threshold){
+  x0 = Note0Val;
+  y0 = 0.7*y0n+0.3*(x0+x0n);
+  x0n = x0;
+  y0n = y0;
+  if (y0 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, D3, 127 );
     midi2Max( MIDI_OFF, D3, 127 );
+    timeElapsed = 0;
   }
 
   Note1Val = analogRead(A1);
-  if (Note1Val >= threshold){
-    
+  x1 = Note1Val;
+  y1 = 0.7*y1n+0.3*(x1+x1n);
+  x1n = x1;
+  y1n = y1;
+  if (y1 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, A_3, 127 );
     midi2Max( MIDI_OFF, A_3, 127 );
+    timeElapsed = 0;
     }
 
   Note8Val = analogRead(A8);
-  if (Note2Val >= threshold){
-
+  x8 = Note8Val;
+  y8 = 0.7*y8n+0.3*(x8+x8n);
+  x8n = x8;
+  y8n = y8;
+  if (y8 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, Bb3, 127 );
     midi2Max( MIDI_OFF, Bb3, 127 );
+    timeElapsed = 0;
     }
-    ///*
-  Note2Val = analogRead(A2);
-  if (Note3Val >= threshold){
 
+  Note2Val = analogRead(A2);
+  x2 = Note2Val;
+  y2 = 0.7*y2n+0.3*(x2+x2n);
+  x2n = x2;
+  y2n = y2;
+  if (y2 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, C4, 127 );
     midi2Max( MIDI_OFF, C4, 127 );
+    timeElapsed = 0;
     }
+    
   Note7Val = analogRead(A7);
-  if (Note4Val >= threshold){
-
+  x7 = Note7Val;
+  y7 = 0.7*y7n+0.3*(x7+x7n);
+  x7n = x7;
+  y7n = y7;
+  if (y7 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, D4, 127 );
     midi2Max( MIDI_OFF, D4, 127 );
+    timeElapsed = 0;
     }
+    
   Note3Val = analogRead(A3);
-  if (Note5Val >= threshold){
-
+  x3 = Note3Val;
+  y3 = 0.7*y3n+0.3*(x3+x3n);
+  x3n = x3;
+  y3n = y3;
+  if (y3 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, E4, 127 );
     midi2Max( MIDI_OFF, E4, 127 );
+    timeElapsed = 0;
     }
+    
   Note6Val = analogRead(A6);
-  if (Note6Val >= threshold){
-
+  x6 = Note6Val;
+  y6 = 0.7*y6n+0.3*(x6+x6n);
+  x6n = x6;
+  y6n = y6;
+  if (y6 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, F4, 127 );
     midi2Max( MIDI_OFF, F4, 127 );
+    timeElapsed = 0;
     }
+    
   Note4Val = analogRead(A4);
-  if (Note7Val >= threshold){
-
+  x4 = Note4Val;
+  y4 = 0.7*y4n+0.3*(x4+x4n);
+  x4n = x4;
+  y4n = y4;
+  if (y4 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, G4, 127 );
     midi2Max( MIDI_OFF, G4, 127 );
+    timeElapsed = 0;
     }
+    
   Note5Val = analogRead(A5);
-  if (Note8Val >= threshold){
-
+  x5 = Note5Val;
+  y5 = 0.7*y5n+0.3*(x5+x5n);
+  x5n = x5;
+  y5n = y5;
+  if (y5 >= threshold && timeElapsed > interval){
     midi2Max( MIDI_PROGRAM + MIDI_CHANNEL, SteelDrum );
     midi2Max( MIDI_ON, A_4, 127 );
     midi2Max( MIDI_OFF, A_4, 127 );
-    }//*/
-  delay(100);  // delay to avoid overloading the serial port buffer
+    timeElapsed = 0;
+    }
+  delay(1);  // delay to avoid overloading the serial port buffer
 }
 
 // Send a MIDI message of 1 to 3 ``bytes'' (without checking values)
@@ -338,14 +465,26 @@ void midi2Max( int cmd, int data1, int data2 )
 {
 	"boxes" : [ 		{
 			"box" : 			{
+				"maxclass" : "message",
+				"text" : "128 62 127",
+				"outlettype" : [ "" ],
+				"id" : "obj-25",
+				"patching_rect" : [ 201.0, 298.0, 94.0, 22.0 ],
+				"numinlets" : 2,
+				"numoutlets" : 1
+			}
+
+		}
+, 		{
+			"box" : 			{
 				"maxclass" : "newobj",
 				"text" : "midiout a",
+				"id" : "obj-1",
 				"patching_rect" : [ 118.0, 301.0, 51.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-1"
+				"numoutlets" : 0
 			}
 
 		}
@@ -353,12 +492,12 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "comment",
 				"text" : "Convert back to numbers",
+				"id" : "obj-2",
 				"patching_rect" : [ 202.0, 267.0, 141.0, 18.0 ],
 				"fontsize" : 10.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-2"
+				"numoutlets" : 0
 			}
 
 		}
@@ -366,12 +505,12 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "comment",
 				"text" : "Convert to ascii",
+				"id" : "obj-3",
 				"patching_rect" : [ 202.0, 241.0, 141.0, 18.0 ],
 				"fontsize" : 10.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-3"
+				"numoutlets" : 0
 			}
 
 		}
@@ -379,13 +518,13 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "newobj",
 				"text" : "fromsymbol",
-				"patching_rect" : [ 118.0, 267.0, 64.0, 19.0 ],
 				"outlettype" : [ "" ],
+				"id" : "obj-4",
+				"patching_rect" : [ 118.0, 267.0, 64.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 1,
-				"id" : "obj-4"
+				"numoutlets" : 1
 			}
 
 		}
@@ -393,13 +532,13 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "newobj",
 				"text" : "itoa",
-				"patching_rect" : [ 118.0, 241.0, 40.0, 19.0 ],
 				"outlettype" : [ "int" ],
+				"id" : "obj-5",
+				"patching_rect" : [ 118.0, 241.0, 40.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 3,
 				"fontname" : "Arial",
-				"numoutlets" : 1,
-				"id" : "obj-5"
+				"numoutlets" : 1
 			}
 
 		}
@@ -407,13 +546,13 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "newobj",
 				"text" : "zl group 78",
-				"patching_rect" : [ 118.0, 214.0, 61.0, 19.0 ],
 				"outlettype" : [ "", "" ],
+				"id" : "obj-6",
+				"patching_rect" : [ 118.0, 214.0, 61.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 2,
 				"fontname" : "Arial",
-				"numoutlets" : 2,
-				"id" : "obj-6"
+				"numoutlets" : 2
 			}
 
 		}
@@ -421,13 +560,13 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "newobj",
 				"text" : "select 10 13",
-				"patching_rect" : [ 118.0, 180.0, 67.0, 19.0 ],
 				"outlettype" : [ "bang", "bang", "" ],
+				"id" : "obj-7",
+				"patching_rect" : [ 118.0, 180.0, 67.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 3,
 				"fontname" : "Arial",
-				"numoutlets" : 3,
-				"id" : "obj-7"
+				"numoutlets" : 3
 			}
 
 		}
@@ -435,52 +574,52 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "comment",
 				"text" : "serial port select",
+				"id" : "obj-8",
 				"patching_rect" : [ 203.0, 22.0, 90.0, 18.0 ],
 				"fontsize" : 10.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-8"
+				"numoutlets" : 0
 			}
 
 		}
 , 		{
 			"box" : 			{
 				"maxclass" : "umenu",
-				"patching_rect" : [ 233.0, 41.0, 48.5, 19.0 ],
 				"outlettype" : [ "int", "", "" ],
+				"id" : "obj-9",
+				"patching_rect" : [ 233.0, 41.0, 48.5, 19.0 ],
+				"allowdrag" : 0,
 				"fontsize" : 9.0,
-				"parameter_enable" : 0,
 				"numinlets" : 1,
+				"parameter_enable" : 0,
 				"fontname" : "Arial",
 				"items" : [ "a", ",", "b", ",", "c", ",", "d", ",", "e", ",", "f", ",", "g", ",", "h" ],
-				"allowdrag" : 0,
-				"numoutlets" : 3,
-				"id" : "obj-9"
+				"numoutlets" : 3
 			}
 
 		}
 , 		{
 			"box" : 			{
 				"maxclass" : "button",
+				"outlettype" : [ "bang" ],
+				"id" : "obj-10",
 				"patching_rect" : [ 315.0, 41.0, 15.0, 15.0 ],
-				"outlettype" : [ "bang" ],
-				"parameter_enable" : 0,
 				"numinlets" : 1,
-				"numoutlets" : 1,
-				"id" : "obj-10"
+				"parameter_enable" : 0,
+				"numoutlets" : 1
 			}
 
 		}
 , 		{
 			"box" : 			{
 				"maxclass" : "button",
-				"patching_rect" : [ 19.0, 119.0, 15.0, 15.0 ],
 				"outlettype" : [ "bang" ],
-				"parameter_enable" : 0,
+				"id" : "obj-11",
+				"patching_rect" : [ 19.0, 119.0, 15.0, 15.0 ],
 				"numinlets" : 1,
-				"numoutlets" : 1,
-				"id" : "obj-11"
+				"parameter_enable" : 0,
+				"numoutlets" : 1
 			}
 
 		}
@@ -488,13 +627,13 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "newobj",
 				"text" : "prepend port",
-				"patching_rect" : [ 233.0, 70.0, 67.0, 19.0 ],
 				"outlettype" : [ "" ],
+				"id" : "obj-12",
+				"patching_rect" : [ 233.0, 70.0, 67.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 1,
-				"id" : "obj-12"
+				"numoutlets" : 1
 			}
 
 		}
@@ -503,58 +642,58 @@ void midi2Max( int cmd, int data1, int data2 )
 				"maxclass" : "comment",
 				"text" : "sample rate (15ms -- 100ms)",
 				"linecount" : 2,
+				"id" : "obj-13",
 				"patching_rect" : [ 102.0, 70.0, 104.0, 29.0 ],
 				"fontsize" : 10.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-13"
+				"numoutlets" : 0
 			}
 
 		}
 , 		{
 			"box" : 			{
 				"maxclass" : "number",
+				"outlettype" : [ "", "bang" ],
+				"id" : "obj-14",
+				"tricolor" : [ 0.75, 0.75, 0.75, 1.0 ],
 				"patching_rect" : [ 61.0, 69.0, 35.0, 19.0 ],
 				"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-				"outlettype" : [ "", "bang" ],
-				"triscale" : 0.9,
 				"fontsize" : 9.0,
-				"bgcolor" : [ 0.866667, 0.866667, 0.866667, 1.0 ],
-				"parameter_enable" : 0,
+				"htricolor" : [ 0.87, 0.82, 0.24, 1.0 ],
 				"numinlets" : 1,
+				"parameter_enable" : 0,
+				"triscale" : 0.9,
 				"fontname" : "Arial",
 				"numoutlets" : 2,
-				"id" : "obj-14",
-				"htricolor" : [ 0.87, 0.82, 0.24, 1.0 ],
-				"tricolor" : [ 0.75, 0.75, 0.75, 1.0 ]
+				"bgcolor" : [ 0.866667, 0.866667, 0.866667, 1.0 ]
 			}
 
 		}
 , 		{
 			"box" : 			{
 				"maxclass" : "slider",
-				"patching_rect" : [ 61.0, 42.0, 127.0, 19.0 ],
 				"outlettype" : [ "" ],
-				"size" : 86.0,
-				"min" : 15.0,
-				"parameter_enable" : 0,
-				"numinlets" : 1,
-				"numoutlets" : 1,
 				"id" : "obj-15",
-				"orientation" : 1
+				"size" : 86.0,
+				"orientation" : 1,
+				"patching_rect" : [ 61.0, 42.0, 127.0, 19.0 ],
+				"min" : 15.0,
+				"numinlets" : 1,
+				"parameter_enable" : 0,
+				"numoutlets" : 1
 			}
 
 		}
 , 		{
 			"box" : 			{
 				"maxclass" : "toggle",
-				"patching_rect" : [ 19.0, 42.0, 15.0, 15.0 ],
 				"outlettype" : [ "int" ],
-				"parameter_enable" : 0,
+				"id" : "obj-16",
+				"patching_rect" : [ 19.0, 42.0, 15.0, 15.0 ],
 				"numinlets" : 1,
-				"numoutlets" : 1,
-				"id" : "obj-16"
+				"parameter_enable" : 0,
+				"numoutlets" : 1
 			}
 
 		}
@@ -562,27 +701,27 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "newobj",
 				"text" : "metro 50",
-				"patching_rect" : [ 19.0, 96.0, 46.0, 19.0 ],
 				"outlettype" : [ "bang" ],
+				"id" : "obj-17",
+				"patching_rect" : [ 19.0, 96.0, 46.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 2,
 				"fontname" : "Arial",
-				"numoutlets" : 1,
-				"id" : "obj-17"
+				"numoutlets" : 1
 			}
 
 		}
 , 		{
 			"box" : 			{
 				"maxclass" : "newobj",
-				"text" : "serial b 115200 8 1 0",
-				"patching_rect" : [ 118.0, 152.0, 110.0, 19.0 ],
+				"text" : "serial h 9600 8 1 0",
 				"outlettype" : [ "int", "" ],
+				"id" : "obj-18",
+				"patching_rect" : [ 118.0, 152.0, 83.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 2,
-				"id" : "obj-18"
+				"numoutlets" : 2
 			}
 
 		}
@@ -590,13 +729,13 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "message",
 				"text" : "print",
-				"patching_rect" : [ 315.0, 70.0, 32.0, 19.0 ],
 				"outlettype" : [ "" ],
+				"id" : "obj-19",
+				"patching_rect" : [ 315.0, 70.0, 32.0, 19.0 ],
 				"fontsize" : 9.0,
 				"numinlets" : 2,
 				"fontname" : "Arial",
-				"numoutlets" : 1,
-				"id" : "obj-19"
+				"numoutlets" : 1
 			}
 
 		}
@@ -604,12 +743,12 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "comment",
 				"text" : "list serial ports",
+				"id" : "obj-20",
 				"patching_rect" : [ 312.0, 22.0, 86.0, 18.0 ],
 				"fontsize" : 10.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-20"
+				"numoutlets" : 0
 			}
 
 		}
@@ -617,12 +756,12 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "comment",
 				"text" : "On/Off",
+				"id" : "obj-21",
 				"patching_rect" : [ 9.0, 22.0, 47.0, 18.0 ],
 				"fontsize" : 10.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-21"
+				"numoutlets" : 0
 			}
 
 		}
@@ -630,12 +769,12 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "comment",
 				"text" : "Ascii character 10 = CR, 13 = LF",
+				"id" : "obj-22",
 				"patching_rect" : [ 202.0, 180.0, 174.0, 18.0 ],
 				"fontsize" : 10.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-22"
+				"numoutlets" : 0
 			}
 
 		}
@@ -643,17 +782,25 @@ void midi2Max( int cmd, int data1, int data2 )
 			"box" : 			{
 				"maxclass" : "comment",
 				"text" : "Group characters until LF",
+				"id" : "obj-23",
 				"patching_rect" : [ 202.0, 214.0, 141.0, 18.0 ],
 				"fontsize" : 10.0,
 				"numinlets" : 1,
 				"fontname" : "Arial",
-				"numoutlets" : 0,
-				"id" : "obj-23"
+				"numoutlets" : 0
 			}
 
 		}
  ],
 	"lines" : [ 		{
+			"patchline" : 			{
+				"source" : [ "obj-4", 0 ],
+				"destination" : [ "obj-25", 1 ],
+				"order" : 0
+			}
+
+		}
+, 		{
 			"patchline" : 			{
 				"source" : [ "obj-9", 0 ],
 				"destination" : [ "obj-12", 0 ]
@@ -693,7 +840,8 @@ void midi2Max( int cmd, int data1, int data2 )
 , 		{
 			"patchline" : 			{
 				"source" : [ "obj-4", 0 ],
-				"destination" : [ "obj-1", 0 ]
+				"destination" : [ "obj-1", 0 ],
+				"order" : 1
 			}
 
 		}
@@ -775,6 +923,7 @@ void midi2Max( int cmd, int data1, int data2 )
 ,
 	"classnamespace" : "box"
 }
+
 
 ```
 
