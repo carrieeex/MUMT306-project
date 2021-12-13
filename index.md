@@ -200,7 +200,7 @@ Another obstacle is that the volume was set to the maximum (127) for each note a
 
 ### Conclusion
 
-Overall, a mini handpan was built successfully with the MIDI communication between Arduino and Max/MSP, the piezoelectric sensor modules, and the pop cans. It can be personalized in any note number and thus any scales, and any instruments within the MIDI specifications. It is affordable, adjustable, and portable, ideal for slow practice. Further investigations of a better  piezoelectric sensor response in terms of accuracy, volume, and dynamics.
+Overall, a mini handpan was built successfully with the MIDI communication between Arduino and Max/MSP, the piezoelectric sensor modules, and the pop cans. It can be personalized in any note number and thus any scales, and any instruments within the MIDI specifications. It is affordable, adjustable, and portable, ideal for slow practice. It can be further investigated, for example, for a better  piezoelectric sensor response in terms of accuracy, volume, and dynamics, and other features like built-in songs for practice can be implemented in the future.
 
 
 
